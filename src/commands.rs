@@ -9,12 +9,11 @@
 //!
 //! See the `impl Configurable` below for how to specify the path to the
 //! application's configuration file.
+mod automate_build;
 
-mod start;
-
-use self::start::StartCmd;
+use self::automate_build::AutomateBuildCmd;
 use crate::config::GaiadBuilderConfig;
-use abscissa_core::{config::Override, Command, Configurable, FrameworkError, Runnable};
+use abscissa_core::{ Command, Configurable, FrameworkError, Runnable};
 use clap::Parser;
 use std::path::PathBuf;
 
@@ -25,8 +24,8 @@ pub const CONFIG_FILE: &str = "gaiad_builder.toml";
 /// Subcommands need to be listed in an enum.
 #[derive(Command, Debug, Parser, Runnable)]
 pub enum GaiadBuilderCmd {
-    /// The `start` subcommand
-    Start(StartCmd),
+    /// Automate build subcommand
+    AutomateBuild(AutomateBuildCmd),
 }
 
 /// Entry point for the application. It needs to be a struct to allow using subcommands!
@@ -76,16 +75,9 @@ impl Configurable<GaiadBuilderConfig> for EntryPoint {
     ///
     /// This can be safely deleted if you don't want to override config
     /// settings from command-line options.
-    fn process_config(
-        &self,
-        config: GaiadBuilderConfig,
-    ) -> Result<GaiadBuilderConfig, FrameworkError> {
-        match &self.cmd {
-            GaiadBuilderCmd::Start(cmd) => cmd.override_config(config),
-            //
-            // If you don't need special overrides for some
-            // subcommands, you can just use a catch all
-            // _ => Ok(config),
-        }
+    fn process_config(&self, config: GaiadBuilderConfig) -> Result<GaiadBuilderConfig, FrameworkError> {
+        Ok(config)
     }
+
+   
 }
