@@ -10,10 +10,11 @@
 //! See the `impl Configurable` below for how to specify the path to the
 //! application's configuration file.
 mod automate_build;
+mod gaia_version;
 
-use self::automate_build::AutomateBuildCmd;
+use self::{automate_build::AutomateBuildCmd, gaia_version::GaiaVersionCmd};
 use crate::config::GaiadBuilderConfig;
-use abscissa_core::{ Command, Configurable, FrameworkError, Runnable};
+use abscissa_core::{Command, Configurable, FrameworkError, Runnable};
 use clap::Parser;
 use std::path::PathBuf;
 
@@ -26,6 +27,8 @@ pub const CONFIG_FILE: &str = "gaiad_builder.toml";
 pub enum GaiadBuilderCmd {
     /// Automate build subcommand
     AutomateBuild(AutomateBuildCmd),
+    /// Gaia versionsubcommand
+    GaiaVersion(GaiaVersionCmd),
 }
 
 /// Entry point for the application. It needs to be a struct to allow using subcommands!
@@ -75,9 +78,10 @@ impl Configurable<GaiadBuilderConfig> for EntryPoint {
     ///
     /// This can be safely deleted if you don't want to override config
     /// settings from command-line options.
-    fn process_config(&self, config: GaiadBuilderConfig) -> Result<GaiadBuilderConfig, FrameworkError> {
+    fn process_config(
+        &self,
+        config: GaiadBuilderConfig,
+    ) -> Result<GaiadBuilderConfig, FrameworkError> {
         Ok(config)
     }
-
-   
 }
