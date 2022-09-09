@@ -3,7 +3,7 @@ name: publish
 on: [push]
 
 jobs:
-  publish-hello-world-image:
+  publish-docker-image:
     runs-on: ubuntu-latest
 
     steps:
@@ -19,5 +19,4 @@ jobs:
     - name: Build Gaia Docker image
       run: |
         docker build . --tag ghcr.io/iqlusioninc/gaia-builder:7.0.2
-        docker run ghcr.io/iqlusioninc/gaia-builder:7.0.2
         docker push ghcr.io/iqlusioninc/gaia-builder:7.0.2
